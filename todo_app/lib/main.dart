@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: SizedBox(
                 width: 500,
                 child: TextField(
@@ -90,11 +90,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
               child: ListView.builder(
-              itemCount: _todoItems.length,
-              itemBuilder: (context, index) {
-              return _createTodo(index);
-          },
-        ),
+                itemCount: _todoItems.length,
+                itemBuilder: (context, index) {
+                  return _createTodo(index);
+                },
+              ),
             )
           ],
         ),
@@ -105,39 +105,56 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _createTodo(int index) {
     return ListTile(
       title: GestureDetector(
-        onTap: (){
-          _editTodoItem(index);
-        },
-        child: Text(
-          _todoItems[index],
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      trailing: IconButton(
-        onPressed: () {
-          setState(() {
-            _todoItems.removeAt(index);
-          });
-        },
-        icon: const Icon(Icons.delete_forever),
-      ),
+          onTap: () {
+            _editTodoItem(index);
+          },
+          child: Container(
+            height: 50,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+            decoration: const BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  _todoItems[index],
+                  style: const TextStyle(color: Colors.black),
+                ),
+                IconButton(
+                  onPressed: () {
+                    // Add the delete functionality here
+                    _deleteTodoItem(index);
+                  },
+                  icon: const Icon(Icons.delete),
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          )),
     );
   }
 
   void _editTodoItem(int index) {
+    String editedValue = _todoItems[index];
+
     showDialog<String>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Edit ToDo Item'),
+          title: const Text('Edit ToDo-Item'),
           content: TextField(
             controller: TextEditingController(text: _todoItems[index]),
             autofocus: true,
+            onChanged: (newValue){
+              editedValue = newValue;
+            },
             onSubmitted: (newValue) {
               setState(() {
                 _todoItems[index] = newValue;
-              });
-              Navigator.of(context).pop();
+              },
+              );
+              Navigator.of(context).pop(newValue);
             },
           ),
           actions: <Widget>[
@@ -147,10 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(
               onPressed: () {
-                setState(() {
-                  _todoItems[index] = myController.text;
-                });
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(editedValue);
               },
               child: const Text('Save'),
             ),
@@ -159,28 +173,40 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     ).then((returnVal) {
       if (returnVal != null) {
+        print('variable2: $returnVal');
         setState(() {
           _todoItems[index] = returnVal;
         });
       }
     });
+  }
 
-
-    /*return Positioned(
-        child: Container(
-            width: 400,
-            color: Colors.lightGreen,
-            alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(name),
-                    IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.delete_forever),
-                    )
-                  ],
-                ),
-            )
-    );*/
+  void _deleteTodoItem(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete ToDo-Item'),
+          content: const Text('Are you sure you want to delete this ToDo Item?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _todoItems.removeAt(index);
+                });
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
