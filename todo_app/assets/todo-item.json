@@ -1,0 +1,27 @@
+[
+    {
+        "title": "Lebensmittel einkaufen",
+        "categoryName": "Einkauf",
+        "finishDate": "2023-11-15"
+    },
+    {
+        "title": "Wäsche waschen",
+        "categoryName": "Haushalt",
+        "finishDate": "2023-11-13"
+    },
+    {
+        "title": "Boden aufwaschen",
+        "categoryName": "Haushalt",
+        "finishDate": "2023-11-17"
+    },
+    {
+        "title": "FH LV besuchen",
+        "categoryName": "Bildung",
+        "finishDate": "2023-11-12"
+    },
+    {
+        "title": "Mit Freunden essen gehen",
+        "categoryName": "Freizeit",
+        "finishDate": "2023-11-14"
+    }
+]
