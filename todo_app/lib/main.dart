@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/infrastructure/todoItem.dart';
 import 'package:todo_app/infrastructure/todoItem_repository.dart';
+import 'package:todo_app/presentation/todoItem/new_todoItem.dart';
 
 import 'presentation/todoItem/initial_todoItem.dart';
 
@@ -110,7 +111,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ListView.builder(
                 itemBuilder: (context, index) {
                   return
-                    _createTodo(index);
+                    NewTodoItem(
+                        newTodoItem: _todoItems[index]
+                    );
+                    //_createTodo(index);
                 },
                 itemCount: _todoItems.length,
               ),
@@ -121,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _createTodo(int index) {
+  /*Widget _createTodo(int index) {
     //split here ---
     return ListTile(
       title: GestureDetector(
@@ -153,7 +157,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           )),
     );
-  }
+  }*/
+
+
 
   /*void _editTodoItem(int index) {
     String editedValue = _todoItems[index];
@@ -166,13 +172,14 @@ class _MyHomePageState extends State<MyHomePage> {
           content: TextField(
             controller: TextEditingController(text: _todoItems[index]),
             autofocus: true,
-            onChanged: (newValue){
+            onChanged: (newValue) {
               editedValue = newValue;
             },
             onSubmitted: (newValue) {
-              setState(() {
-                _todoItems[index] = newValue;
-              },
+              setState(
+                    () {
+                  _todoItems[index] = newValue;
+                },
               );
               Navigator.of(context).pop(newValue);
             },
