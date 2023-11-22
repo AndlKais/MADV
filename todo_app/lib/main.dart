@@ -123,7 +123,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    // Add the delete functionality here
                     _deleteTodoItem(index);
                   },
                   icon: const Icon(Icons.delete),
@@ -191,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: const Text('Cancel'),
             ),
@@ -200,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(() {
                   _todoItems.removeAt(index);
                 });
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: const Text('Delete'),
             ),
