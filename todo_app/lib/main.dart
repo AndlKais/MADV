@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/infrastructure/todoItem.dart';
 import 'package:todo_app/infrastructure/todoItem_repository.dart';
-import 'package:todo_app/presentation/todoItem/new_todoItem.dart';
 
-import 'presentation/todoItem/initial_todoItem.dart';
-
+/*import 'presentation/todoItem/initial_todoItem.dart';*/
 
 void main() {
   runApp(const MyApp());
@@ -49,12 +47,32 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  @override
+  /* Richtig: @override
   void initState() {
     super.initState();
     todoItemRepository.fillList().then((todoItems) => {
       print(todoItems),
       setState(() => {_todoItems = todoItems})
+    });
+  }*/
+/* ? @override
+void initState() {
+  super.initState();
+  todoItemRepository.fillList().then((todoItems) {
+    print(todoItems);
+    setState(() {
+      _todoItems = todoItems;
+    });
+  });
+}*/
+  @override
+  void initState() {
+    super.initState();
+    todoItemRepository.fillList().then((todoItems) {
+      print('Geladene Daten: $todoItems');
+      setState(() {
+        _todoItems = todoItems;
+      });
     });
   }
 
@@ -101,20 +119,28 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onPressed: () {
                 setState(() {
-                  _todoItems.add(TodoItem(title: myController.text, categoryName: "Default", finishDate: ''));
+                  _todoItems.add(TodoItem(
+                      title: myController.text,
+                      categoryName: "Default",
+                      finishDate: ''));
                   myController.clear();
                 });
               },
               child: const Text("Add ToDo"),
             ),
-            Expanded(
+            /* Expanded(
               child: ListView.builder(
                 itemBuilder: (context, index) {
                   return
-                    NewTodoItem(
-                        newTodoItem: _todoItems[index]
-                    );
-                    //_createTodo(index);
+                    _createTodo(index);
+                },
+                itemCount: _todoItems.length,
+              ),
+            )*/
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return _createTodo(index);
                 },
                 itemCount: _todoItems.length,
               ),
@@ -125,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  /*Widget _createTodo(int index) {
+  /* Widget _createTodo(int index) {
     //split here ---
     return ListTile(
       title: GestureDetector(
@@ -157,9 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           )),
     );
-  }*/
-
-
+  } */
 
   /*void _editTodoItem(int index) {
     String editedValue = _todoItems[index];
@@ -172,14 +196,13 @@ class _MyHomePageState extends State<MyHomePage> {
           content: TextField(
             controller: TextEditingController(text: _todoItems[index]),
             autofocus: true,
-            onChanged: (newValue) {
+            onChanged: (newValue){
               editedValue = newValue;
             },
             onSubmitted: (newValue) {
-              setState(
-                    () {
-                  _todoItems[index] = newValue;
-                },
+              setState(() {
+                _todoItems[index] = newValue;
+              },
               );
               Navigator.of(context).pop(newValue);
             },
@@ -213,7 +236,8 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Delete ToDo-Item'),
-          content: const Text('Are you sure you want to delete this ToDo Item?'),
+          content:
+              const Text('Are you sure you want to delete this ToDo Item?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
