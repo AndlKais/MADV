@@ -53,6 +53,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/todo-item.json
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -60,8 +62,8 @@ flutter:
   uses-material-design: true
 
 
-  assets:
-     - todoItem_assets/todoitems.json
+  #assets:
+    # - todoItem_assets/todoitems.json
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
