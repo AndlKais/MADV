@@ -5,7 +5,6 @@ import 'package:todo_app/presentation/todoItem/new_todoItem.dart';
 
 import 'presentation/todoItem/initial_todoItem.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -41,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final myController = TextEditingController();
   final todoItemRepository = TodoItemRepository();
   List<TodoItem> _todoItems = [];
+
   //List<TodoItem> _availableTodoItems = [];
 
   @override
@@ -52,10 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    todoItemRepository.fillList().then((todoItems) => {
-      print(todoItems),
-      setState(() => {_todoItems = todoItems})
-    });
+    todoItemRepository.fillList().then((todoItems) =>
+        {print(todoItems), setState(() => _todoItems = todoItems)});
   }
 
   @override
@@ -101,7 +99,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onPressed: () {
                 setState(() {
-                  _todoItems.add(TodoItem(title: myController.text, categoryName: "Default", finishDate: ''));
+                  _todoItems.add(TodoItem(
+                      title: myController.text,
+                      categoryName: "Default",
+                      finishDate: ''));
                   myController.clear();
                 });
               },
@@ -110,10 +111,14 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  return
-                    NewTodoItem(
-                        newTodoItem: _todoItems[index]
-                    );
+                  return NewTodoItem(
+                      newTodoItem: _todoItems[index],
+                      onPressed: (todoItem) {
+                        if (todoItem.origin == TodoItemOrigin.New) {
+                          _editTodoItem(index);
+                        }
+                      });
+
                   //_createTodo(index);
                 },
                 itemCount: _todoItems.length,
@@ -125,47 +130,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
   //test
 
-  /*Widget _createTodo(int index) {
-    //split here ---
-    return ListTile(
-      title: GestureDetector(
-          onTap: () {
-            //_editTodoItem(index);
-          },
-          child: Container(
-            height: 50,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-            decoration: const BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  _todoItems[index].title,
-                  style: const TextStyle(color: Colors.black),
-                ),
-                IconButton(
-                  onPressed: () {
-                    // Add the delete functionality here
-                    _deleteTodoItem(index);
-                  },
-                  icon: const Icon(Icons.delete),
-                  color: Colors.white,
-                ),
-              ],
-            ),
-          )),
-    );
-  }*/
-
-
-
-  /*void _editTodoItem(int index) {
-    String editedValue = _todoItems[index];
+  void _editTodoItem(int index) {
+    String editedValue = _todoItems[index].title;
 
     showDialog<String>(
       context: context,
@@ -173,15 +141,15 @@ class _MyHomePageState extends State<MyHomePage> {
         return AlertDialog(
           title: const Text('Edit ToDo-Item'),
           content: TextField(
-            controller: TextEditingController(text: _todoItems[index]),
+            controller: TextEditingController(text: _todoItems[index].title),
             autofocus: true,
             onChanged: (newValue) {
               editedValue = newValue;
             },
             onSubmitted: (newValue) {
               setState(
-                    () {
-                  _todoItems[index] = newValue;
+                () {
+                  _todoItems[index].title = newValue;
                 },
               );
               Navigator.of(context).pop(newValue);
@@ -204,11 +172,11 @@ class _MyHomePageState extends State<MyHomePage> {
     ).then((returnVal) {
       if (returnVal != null) {
         setState(() {
-          _todoItems[index] = returnVal;
+          _todoItems[index].title = returnVal;
         });
       }
     });
-  }*/
+  }
 
   void _deleteTodoItem(int index) {
     showDialog(
@@ -216,7 +184,8 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Delete ToDo-Item'),
-          content: const Text('Are you sure you want to delete this ToDo Item?'),
+          content:
+              const Text('Are you sure you want to delete this ToDo Item?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -239,4 +208,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
