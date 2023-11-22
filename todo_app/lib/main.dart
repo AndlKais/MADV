@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/infrastructure/todoItem.dart';
+import 'package:todo_app/infrastructure/todoItem_repository.dart';
+import 'package:todo_app/presentation/todoItem/new_todoItem.dart';
+
+import 'presentation/todoItem/initial_todoItem.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -33,12 +39,23 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final myController = TextEditingController();
-  final List<String> _todoItems = [];
+  final todoItemRepository = TodoItemRepository();
+  List<TodoItem> _todoItems = [];
+  //List<TodoItem> _availableTodoItems = [];
 
   @override
   void dispose() {
     myController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    todoItemRepository.fillList().then((todoItems) => {
+      print(todoItems),
+      setState(() => {_todoItems = todoItems})
+    });
   }
 
   @override
@@ -49,6 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         centerTitle: true,
       ),
+
+      //split here ---
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -82,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onPressed: () {
                 setState(() {
-                  _todoItems.add(myController.text);
+                  _todoItems.add(TodoItem(title: myController.text, categoryName: "Default", finishDate: ''));
                   myController.clear();
                 });
               },
@@ -90,10 +109,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: _todoItems.length,
                 itemBuilder: (context, index) {
-                  return _createTodo(index);
+                  return
+                    NewTodoItem(
+                        newTodoItem: _todoItems[index]
+                    );
+                    //_createTodo(index);
                 },
+                itemCount: _todoItems.length,
               ),
             )
           ],
@@ -102,11 +125,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _createTodo(int index) {
+  /*Widget _createTodo(int index) {
+    //split here ---
     return ListTile(
       title: GestureDetector(
           onTap: () {
-            _editTodoItem(index);
+            //_editTodoItem(index);
           },
           child: Container(
             height: 50,
@@ -118,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  _todoItems[index],
+                  _todoItems[index].title,
                   style: const TextStyle(color: Colors.black),
                 ),
                 IconButton(
@@ -132,9 +156,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           )),
     );
-  }
+  }*/
 
-  void _editTodoItem(int index) {
+
+
+  /*void _editTodoItem(int index) {
     String editedValue = _todoItems[index];
 
     showDialog<String>(
@@ -145,13 +171,14 @@ class _MyHomePageState extends State<MyHomePage> {
           content: TextField(
             controller: TextEditingController(text: _todoItems[index]),
             autofocus: true,
-            onChanged: (newValue){
+            onChanged: (newValue) {
               editedValue = newValue;
             },
             onSubmitted: (newValue) {
-              setState(() {
-                _todoItems[index] = newValue;
-              },
+              setState(
+                    () {
+                  _todoItems[index] = newValue;
+                },
               );
               Navigator.of(context).pop(newValue);
             },
@@ -172,13 +199,12 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     ).then((returnVal) {
       if (returnVal != null) {
-        print('variable2: $returnVal');
         setState(() {
           _todoItems[index] = returnVal;
         });
       }
     });
-  }
+  }*/
 
   void _deleteTodoItem(int index) {
     showDialog(
