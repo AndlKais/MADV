@@ -116,6 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: (todoItem) {
                         if (todoItem.origin == TodoItemOrigin.New) {
                           _editTodoItem(index);
+                          
                         }
                       });
 
