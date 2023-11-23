@@ -1,18 +1,19 @@
-import 'package:todo_app/infrastructure/todoItem.dart';
+import 'package:todo_app/infrastructure/todo_item.dart';
 import 'package:flutter/material.dart';
 
 class NewTodoItem extends StatelessWidget {
   final TodoItem newTodoItem;
+  final Function(TodoItem) onPressed;
 
-  const NewTodoItem({super.key, required this.newTodoItem});
+  const NewTodoItem({super.key, required this.newTodoItem, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: GestureDetector(
-        onTap: () {
+        onTap: () => onPressed(newTodoItem),
           //_editTodoItem(index);
-        },
+
         child: Container(
           height: 50,
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
@@ -44,6 +45,4 @@ class NewTodoItem extends StatelessWidget {
       ),
     );
   }
-
-
 }

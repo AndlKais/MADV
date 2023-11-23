@@ -1,4 +1,4 @@
-import 'package:todo_app/infrastructure/todoItem.dart';
+import 'package:todo_app/infrastructure/todo_item.dart';
 import 'package:flutter/material.dart';
 
 class InitialTodoItem extends StatelessWidget {
