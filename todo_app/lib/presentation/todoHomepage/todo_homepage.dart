@@ -1,28 +1,9 @@
 import 'package:flutter/material.dart';
-import 'presentation/app.dart';
-
-void main() {
-<<<<<<< HEAD
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ToDo Project',
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0x94A0EAFF),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'ToDo-App'),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
+import 'package:todo_app/infrastructure/todo_item.dart';
+import 'package:todo_app/infrastructure/todoItem_repository.dart';
+import 'package:todo_app/presentation/todoItem/new_todo_item.dart';
+import 'package:todo_app/presentation/todoList/todo_input.dart';
+import '../todoItem/initial_todo_item.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -49,8 +30,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    todoItemRepository.fillList().then((todoItems) =>
-        {print(todoItems), setState(() => _todoItems = todoItems)});
+    todoItemRepository
+        .fillList()
+        .then((todoItems) => setState(() => _todoItems = todoItems));
   }
 
   @override
@@ -62,49 +44,17 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
       ),
 
-      //split here ---
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(15),
-              child: Text(
-                'Please enter your ToDo: ',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: SizedBox(
-                width: 500,
-                child: TextField(
-                  controller: myController,
-                  textAlign: TextAlign.center,
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'ToDo:',
-                      hintText: 'Enter Your ToDo'),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.red,
-              ),
-              onPressed: () {
-                setState(() {
-                  _todoItems.add(TodoItem(
-                      title: myController.text,
-                      categoryName: "Default",
-                      finishDate: ''));
-                  myController.clear();
-                });
-              },
-              child: const Text("Add ToDo"),
-            ),
+            TodoInput(
+                todoItems: _todoItems,
+                onTodoItemsUpdated: (updatedTodoItems) {
+                  setState(() {
+                    _todoItems = updatedTodoItems;
+                  });
+                }),
             Expanded(
               child: ListView.builder(
                 itemBuilder: (context, index) {
@@ -113,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: (todoItem) {
                         if (todoItem.origin == TodoItemOrigin.New) {
                           _editTodoItem(index);
-                          
                         }
                       });
 
@@ -206,7 +155,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-=======
-  runApp(const App());
-}
->>>>>>> a2a3c5971b7ee56593fd01bef0ed8fe098f33512

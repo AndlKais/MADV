@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:todo_app/infrastructure/todoItem.dart';
+import 'package:todo_app/infrastructure/todo_item.dart';
 
 
 class TodoItemRepository {
