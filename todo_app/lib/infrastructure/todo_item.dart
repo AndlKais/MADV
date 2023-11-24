@@ -1,9 +1,7 @@
-
 enum TodoItemOrigin {
   Initial,
   New,
-  }
-
+}
 
 class TodoItem{
   String title;
@@ -11,12 +9,9 @@ class TodoItem{
   String finishDate;
   TodoItemOrigin origin;
 
-
-
   TodoItem({required this.title, required this.categoryName, required this.finishDate,
   this.origin = TodoItemOrigin.New
   });
-
 
   factory TodoItem.fromJson(Map<String, dynamic> json) {
     return TodoItem(
