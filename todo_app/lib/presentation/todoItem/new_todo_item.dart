@@ -7,7 +7,7 @@ class NewTodoItem extends GetView<TodoHomepageController> {
   final TodoItem newTodoItem;
   final Function(TodoItem)? onPressed;
 
-  const NewTodoItem({Key? key, required this.newTodoItem, required this.onPressed});
+  const NewTodoItem({super.key, required this.newTodoItem, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

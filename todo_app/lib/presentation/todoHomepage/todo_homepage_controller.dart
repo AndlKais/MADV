@@ -7,10 +7,18 @@ class TodoHomepageController extends GetxController {
   var todoItemRepository = Get.find<TodoItemRepository>();
   var initialTodoItems = <TodoItem>[].obs;
 
+  var myController = TextEditingController();
+
   @override
   void onInit() {
     super.onInit();
     _initData();
+  }
+
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
   }
 
   void _initData() {
@@ -60,11 +68,6 @@ class TodoHomepageController extends GetxController {
   }
 
   void deleteTodoItem(TodoItem todoItem) {
-    if (todoItem != null) {
-      print('Error: todoItem is null');
-      return;
-    }
-
     var todoItemsList = List<TodoItem>.from(initialTodoItems);
 
     Get.dialog(

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/infrastructure/todo_item.dart';
 
 class TodoInput extends StatefulWidget {
-  List<TodoItem> todoItems;
+  final List<TodoItem> todoItems;
   final Function(List<TodoItem>) onTodoItemsUpdated;
-  TodoInput({super.key, required this.todoItems, required this.onTodoItemsUpdated});
+  const TodoInput({super.key, required this.todoItems, required this.onTodoItemsUpdated});
 
   @override
   State<StatefulWidget> createState() => _TodoInputState();

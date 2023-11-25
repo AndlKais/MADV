@@ -13,12 +13,6 @@ class TodoHomepage extends GetView<TodoHomepageController> {
 
   final todoItemRepository = TodoItemRepository();
 
-  /*@override
-  void dispose() {
-    myController.dispose();
-    super.dispose();
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,12 +36,11 @@ class TodoHomepage extends GetView<TodoHomepageController> {
                     return NewTodoItem(
                         newTodoItem: controller.initialTodoItems[index],
                         onPressed: (todoItem) {
-                          if (todoItem.origin == TodoItemOrigin.New) {
+                          if (todoItem.origin == TodoItemOrigin.newItem) {
                             controller.editTodoItem(
                                 controller.initialTodoItems[index]);
                           }
                         });
-                    //_createTodo(index);
                   },
                   itemCount: controller.initialTodoItems.length,
                 ),
