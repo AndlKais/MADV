@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/infrastructure/todo_item.dart';
@@ -11,7 +13,7 @@ class TodoHomepage extends GetView<TodoHomepageController> {
 
   TodoHomepage({super.key, required this.title});
 
-  final todoItemRepository = TodoItemRepository();
+  //final todoItemRepository = TodoItemRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -27,25 +29,31 @@ class TodoHomepage extends GetView<TodoHomepageController> {
           children: [
             TodoInput(
                 todoItems: controller.initialTodoItems,
-                onTodoItemsUpdated: (updatedTodoItems) {}),
+                onTodoItemsUpdated: (updatedTodoItems) {}
+            ),
             const SizedBox(height: 20),
             Expanded(
-              child: Obx(
-                () => ListView.builder(
+              child:
+              Obx(() => ListView.builder(
                   itemBuilder: (context, index) {
-                    return NewTodoItem(
-                        newTodoItem: controller.initialTodoItems[index],
-                        onPressed: (todoItem) {
-                          if (todoItem.origin == TodoItemOrigin.newItem) {
-                            controller.editTodoItem(
-                                controller.initialTodoItems[index]);
-                          }
-                        });
-                  },
+                      return NewTodoItem(
+                          newTodoItem: controller.initialTodoItems[index],
+                          onTap: (todoItem){
+                            controller.editTodoItem(controller.initialTodoItems[index]);
+
+                          },
+                          /*onPressed: (todoItem) {
+                            todoItem = controller.initialTodoItems[index];
+                            print(todoItem.categoryName);
+                            print("Logged!");
+                            controller.editTodoItem(todoItem);
+                          }*/
+                      );
+                    },
                   itemCount: controller.initialTodoItems.length,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
