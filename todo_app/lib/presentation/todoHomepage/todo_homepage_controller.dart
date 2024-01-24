@@ -22,8 +22,9 @@ class TodoHomepageController extends GetxController {
   }
 
   void _initData() {
+    print("initialisieren");
     todoItemRepository
-        .fillList()
+        .getAllTodoItems()
         .then((todoItems) => initialTodoItems.addAll(todoItems));
   }
 
