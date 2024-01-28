@@ -13,13 +13,7 @@ class TodoHomepage extends GetView<TodoHomepageController> {
 
   TodoHomepage({super.key, required this.title});
 
-  final todoItemRepository = TodoItemRepository();
-
-  /*@override
-  void dispose() {
-    myController.dispose();
-    super.dispose();
-  }*/
+  //final todoItemRepository = TodoItemRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -35,27 +29,31 @@ class TodoHomepage extends GetView<TodoHomepageController> {
           children: [
             TodoInput(
                 todoItems: controller.initialTodoItems,
-                onTodoItemsUpdated: (updatedTodoItems) {}),
+                onTodoItemsUpdated: (updatedTodoItems) {}
+            ),
             const SizedBox(height: 20),
             Expanded(
-              child: Obx(
-                () => ListView.builder(
+              child:
+              Obx(() => ListView.builder(
                   itemBuilder: (context, index) {
-                    return NewTodoItem(
-                        newTodoItem: controller.initialTodoItems[index],
-                        onPressed: (todoItem) {
-                          inspect(todoItem);
-                          if (todoItem.origin == TodoItemOrigin.New) {
-                            controller.editTodoItem(
-                                controller.initialTodoItems[index]);
-                          }
-                        });
-                    //_createTodo(index);
-                  },
+                      return NewTodoItem(
+                          newTodoItem: controller.initialTodoItems[index],
+                          onTap: (todoItem){
+                            controller.editTodoItem(controller.initialTodoItems[index]);
+
+                          },
+                          /*onPressed: (todoItem) {
+                            todoItem = controller.initialTodoItems[index];
+                            print(todoItem.categoryName);
+                            print("Logged!");
+                            controller.editTodoItem(todoItem);
+                          }*/
+                      );
+                    },
                   itemCount: controller.initialTodoItems.length,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

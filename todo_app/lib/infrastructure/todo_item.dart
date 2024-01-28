@@ -1,6 +1,6 @@
 enum TodoItemOrigin {
-  Initial,
-  New,
+  initialItem,
+  newItem,
 }
 
 class TodoItem{
@@ -10,7 +10,7 @@ class TodoItem{
   TodoItemOrigin origin;
 
   TodoItem({required this.title, required this.categoryName, required this.finishDate,
-  this.origin = TodoItemOrigin.New
+  this.origin = TodoItemOrigin.newItem
   });
 
   factory TodoItem.fromJson(Map<String, dynamic> json) {
