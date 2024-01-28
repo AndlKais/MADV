@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:todo_app/infrastructure/todo_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,7 @@ class NewTodoItem extends GetView<TodoHomepageController> {
       title: GestureDetector(
         onTap: () {
           if (onPressed != null) {
+            inspect(newTodoItem);
             onPressed!(newTodoItem);
           }
         },
@@ -37,6 +40,7 @@ class NewTodoItem extends GetView<TodoHomepageController> {
               ),
               IconButton(
                 onPressed: () {
+                  inspect(newTodoItem);
                   controller.deleteTodoItem(newTodoItem);
                 },
                 icon: const Icon(Icons.delete),

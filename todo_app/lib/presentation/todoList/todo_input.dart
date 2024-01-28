@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo_app/infrastructure/todo_item.dart';
 
@@ -52,6 +54,7 @@ class _TodoInputState extends State<TodoInput> {
               categoryName: "Default",
               finishDate: '',
             );
+            inspect(newTodoItem);
             setState(() {
               widget.todoItems.add(newTodoItem);
               myController.clear();

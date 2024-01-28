@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/infrastructure/todo_item.dart';
@@ -42,6 +44,7 @@ class TodoHomepage extends GetView<TodoHomepageController> {
                     return NewTodoItem(
                         newTodoItem: controller.initialTodoItems[index],
                         onPressed: (todoItem) {
+                          inspect(todoItem);
                           if (todoItem.origin == TodoItemOrigin.New) {
                             controller.editTodoItem(
                                 controller.initialTodoItems[index]);
