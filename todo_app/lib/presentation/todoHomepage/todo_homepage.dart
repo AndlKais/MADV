@@ -1,17 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/infrastructure/todo_item.dart';
-import 'package:todo_app/infrastructure/todoItem_repository.dart';
 import 'package:todo_app/presentation/todoItem/new_todo_item.dart';
 import 'package:todo_app/presentation/todoList/todo_input.dart';
 import 'package:todo_app/presentation/todoHomepage/todo_homepage_controller.dart';
 
 class TodoHomepage extends GetView<TodoHomepageController> {
-  final String title;
 
-  TodoHomepage({super.key, required this.title});
+
+  TodoHomepage({super.key});
 
   //final todoItemRepository = TodoItemRepository();
 

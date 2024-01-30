@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:todo_app/infrastructure/todo_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -8,11 +8,15 @@ class TodoItemRepository {
     final todoItemsCollection =
         await FirebaseFirestore.instance.collection('todoItems').get();
 
-    print("komme bis hier hin");
+    if (kDebugMode) {
+      print("komme bis hier hin");
+    }
 
 
     for (QueryDocumentSnapshot documentSnapshot in todoItemsCollection.docs) {
-      print(documentSnapshot.data());
+      if (kDebugMode) {
+        print(documentSnapshot.data());
+      }
     }
 
     final todoItemList = todoItemsCollection.docs
