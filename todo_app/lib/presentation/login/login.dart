@@ -7,8 +7,8 @@ import 'package:todo_app/presentation/todoHomepage/todo_login_controller.dart';
 class Login extends GetView<TodoLoginController> {
 
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(text: 'max.mustermann@gmail.com');
+  final TextEditingController passwordController = TextEditingController(text: '123456');
 
   Login({super.key});
 

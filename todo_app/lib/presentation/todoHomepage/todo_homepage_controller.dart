@@ -31,7 +31,7 @@ class TodoHomepageController extends GetxController {
   void editTodoItem(TodoItem todoItem) {
     print("bin in editTodoItem");
     String editedValue = initialTodoItems[initialTodoItems.indexOf(todoItem)]
-        .title;
+        .name;
 
     TextEditingController editingController = TextEditingController(
         text: editedValue);
@@ -51,7 +51,7 @@ class TodoHomepageController extends GetxController {
       ),
       confirm: ElevatedButton(
         onPressed: () {
-          initialTodoItems[initialTodoItems.indexOf(todoItem)].title = editedValue;
+          initialTodoItems[initialTodoItems.indexOf(todoItem)].name = editedValue;
           Get.back();
         },
         child: const Text('Save'),
@@ -64,7 +64,7 @@ class TodoHomepageController extends GetxController {
       ),
     ).then((returnVal) {
       if (returnVal != null) {
-        initialTodoItems[initialTodoItems.indexOf(todoItem)].title = returnVal;
+        initialTodoItems[initialTodoItems.indexOf(todoItem)].name = returnVal;
       }
     });
   }

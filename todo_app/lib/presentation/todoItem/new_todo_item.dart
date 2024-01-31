@@ -28,11 +28,11 @@ class NewTodoItem extends GetView<TodoHomepageController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(newTodoItem.title),
-              Text(
+              Text(newTodoItem.name),
+              /*Text(
                 'Finish Date: ${newTodoItem.finishDate}',
                 style: const TextStyle(color: Colors.black),
-              ),
+              ),*/
               IconButton(
                 onPressed: () {
                   _showDeleteConfirmationDialog(context, newTodoItem);

@@ -48,9 +48,9 @@ class _TodoInputState extends State<TodoInput> {
           ),
           onPressed: () {
             final newTodoItem = TodoItem(
-              title: myController.text,
-              categoryName: "Default",
-              finishDate: '',
+              name: myController.text,
+              done: "Default",
+              id: '',
             );
             setState(() {
               widget.todoItems.add(newTodoItem);
