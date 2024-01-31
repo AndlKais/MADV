@@ -1,6 +1,6 @@
 class TodoItem{
-  String id;
-  String done;
+  int id;
+  bool done;
   String name;
 
   TodoItem({required this.id, required this.done, required this.name});

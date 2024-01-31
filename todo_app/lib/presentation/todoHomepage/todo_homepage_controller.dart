@@ -23,22 +23,26 @@ class TodoHomepageController extends GetxController {
 
   void _initData() {
     print("initialisieren");
-    todoItemRepository
-        .getAllTodoItems()
-        .then((todoItems) => initialTodoItems.addAll(todoItems));
+    todoItemRepository.getAllTodoItems().then((todoItems) {
+      print("Abgerufene TodoItems: $todoItems");
+      if (todoItems.isNotEmpty) {
+        initialTodoItems.addAll(todoItems);
+      } else {
+        print("Keine Daten gefunden");
+      }
+    }).catchError((error) {
+      print("Fehler beim Abrufen der Daten: $error");
+    });
   }
 
   void editTodoItem(TodoItem todoItem) {
-    print("bin in editTodoItem");
-    String editedValue = initialTodoItems[initialTodoItems.indexOf(todoItem)]
-        .name;
+    todoItemRepository.updateDataBasedOnQuery('name', 'test', 'testerchen');
 
-    TextEditingController editingController = TextEditingController(
-        text: editedValue);
+    String editedValue =
+        initialTodoItems[initialTodoItems.indexOf(todoItem)].name;
 
-    print(editedValue);
-
-
+    TextEditingController editingController =
+        TextEditingController(text: editedValue);
 
     Get.defaultDialog(
       title: 'Edit ToDo-Item',
@@ -51,7 +55,8 @@ class TodoHomepageController extends GetxController {
       ),
       confirm: ElevatedButton(
         onPressed: () {
-          initialTodoItems[initialTodoItems.indexOf(todoItem)].name = editedValue;
+          initialTodoItems[initialTodoItems.indexOf(todoItem)].name =
+              editedValue;
           Get.back();
         },
         child: const Text('Save'),
@@ -68,8 +73,6 @@ class TodoHomepageController extends GetxController {
       }
     });
   }
-
-
 
 /*Get.defaultDialog(
           title: 'Dialog',
@@ -100,33 +103,7 @@ class TodoHomepageController extends GetxController {
   }*/
 
   void deleteTodoItem(TodoItem todoItem) {
-
     initialTodoItems.remove(todoItem);
-
-    /*
-    var todoItemsList = List<TodoItem>.from(initialTodoItems);
-
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Delete ToDo-Item'),
-        content: const Text('Are you sure you want to delete this ToDo Item?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Get.back();
-            },
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              initialTodoItems.remove(todoItem);
-              initialTodoItems.assignAll(todoItemsList);
-              Get.back();
-            },
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );*/
+    todoItemRepository.deleteDataBasedOnQuery('name', 'testerchen');
   }
 }
