@@ -1,14 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/presentation/todoHomepage/todo_homepage.dart';
 import 'package:todo_app/presentation/todoHomepage/todo_login_controller.dart';
 
-
 class Login extends GetView<TodoLoginController> {
-
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController(text: 'max.mustermann@gmail.com');
-  final TextEditingController passwordController = TextEditingController(text: '123456');
+  final TextEditingController emailController =
+      TextEditingController(text: 'max.mustermann@gmail.com');
+  final TextEditingController passwordController =
+      TextEditingController(text: '123456');
 
   Login({super.key});
 
@@ -22,8 +24,7 @@ class Login extends GetView<TodoLoginController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextFormField(
                 controller: emailController,
                 decoration: const InputDecoration(
@@ -37,8 +38,7 @@ class Login extends GetView<TodoLoginController> {
               ),
             ),
             Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextFormField(
                 controller: passwordController,
                 obscureText: true,
@@ -54,7 +54,7 @@ class Login extends GetView<TodoLoginController> {
             ),
             Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {
@@ -62,23 +62,53 @@ class Login extends GetView<TodoLoginController> {
                       if (emailController.text == "max.mustermann@gmail.com" &&
                           passwordController.text == "123456") {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const TodoHomepage()
-                        ));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const TodoHomepage()));
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text('E-Mail Adresse oder Passwort falsch')),
+                              content:
+                                  Text('E-Mail Adresse oder Passwort falsch')),
                         );
                       }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('E-Mail Adresse oder Passwort wurde nicht gesetzt')),
+                        const SnackBar(
+                            content: Text(
+                                'E-Mail Adresse oder Passwort wurde nicht gesetzt')),
                       );
                     }
                   },
                   child: const Text('Submit'),
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
+              child: Center(
+                child: TextButton(
+                  onPressed: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Forgot Password'),
+                          content: const Text('Please contact your admin'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: const Text('Forgot Password?'),
                 ),
               ),
             ),

@@ -41,8 +41,6 @@ class TodoItemRepository {
   }
 
   Future<void> deleteDataBasedOnQuery(TodoItem todoItem) async {
-    print("field: $todoItem.id");
-
     try {
       await _firestore.collection('todoItems').doc(todoItem.id).delete();
       print('Daten erfolgreich aus Firestore gelöscht.');
