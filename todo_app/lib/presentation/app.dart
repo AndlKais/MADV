@@ -12,7 +12,7 @@ class App extends StatelessWidget {
     Get.lazyPut(() => TodoHomepageController());
     Get.lazyPut(() => TodoItemRepository());
 
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'ToDo-List',
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0x94A0EAFF),

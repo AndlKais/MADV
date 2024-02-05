@@ -8,20 +8,14 @@ class TodoItemRepository {
   Future<List<TodoItem>> getAllTodoItems() async {
     final todoItemsCollection = await _firestore.collection('todoItems').get();
 
-    if (kDebugMode) {
-      print("komme bis hier hin");
-    }
-
     for (QueryDocumentSnapshot documentSnapshot in todoItemsCollection.docs) {
       if (kDebugMode) {
         print(documentSnapshot.data());
       }
     }
 
-    final todoItemList = todoItemsCollection.docs
-        .map((QueryDocumentSnapshot e) =>
-        TodoItem.fromJson(e.data() as Map<String, dynamic>))
-        .toList();
+    final todoItemList =
+        todoItemsCollection.docs.map((e) => TodoItem.fromJson(e)).toList();
 
     return Future.value(todoItemList);
 
@@ -46,42 +40,23 @@ class TodoItemRepository {
     }
   }
 
-  Future<void> deleteDataBasedOnQuery(String field, String value) async {
+  Future<void> deleteDataBasedOnQuery(TodoItem todoItem) async {
+    print("field: $todoItem.id");
+
     try {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection('todoItems')
-          .where(field, isEqualTo: value)
-          .get();
-
-
-      print('Anzahl der Dokumente: ${querySnapshot.size}');
-
-
-      for (QueryDocumentSnapshot document in querySnapshot.docs) {
-        print(" kurz vorm Löschen ");
-        await document.reference.delete();
-      }
-
+      await _firestore.collection('todoItems').doc(todoItem.id).delete();
       print('Daten erfolgreich aus Firestore gelöscht.');
     } catch (e) {
       print('Fehler beim Löschen der Daten: $e');
     }
   }
 
-  Future<void> updateDataBasedOnQuery(String field, String oldValue,
-      String newValue) async {
+  Future<void> updateDataBasedOnQuery(String name, bool done, String id) async {
     try {
-      QuerySnapshot querySnapshot = await _firestore
+      await _firestore
           .collection('todoItems')
-          .where(field, isEqualTo: oldValue)
-          .get();
-
-      print('Anzahl der Dokumente: ${querySnapshot.size}');
-
-      for (QueryDocumentSnapshot document in querySnapshot.docs) {
-        print("kurz vorm Aktualisieren");
-        await document.reference.update({field: newValue});
-      }
+          .doc(id)
+          .update({'id': id, 'done': done, 'name': name});
       print('Daten erfolgreich in Firestore aktualisiert.');
     } catch (e) {
       print('Fehler beim Aktualisieren der Daten: $e');

@@ -5,11 +5,7 @@ import 'package:todo_app/presentation/todoList/todo_input.dart';
 import 'package:todo_app/presentation/todoHomepage/todo_homepage_controller.dart';
 
 class TodoHomepage extends GetView<TodoHomepageController> {
-
-
-  TodoHomepage({super.key});
-
-  //final todoItemRepository = TodoItemRepository();
+  const TodoHomepage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,27 +21,16 @@ class TodoHomepage extends GetView<TodoHomepageController> {
           children: [
             TodoInput(
                 todoItems: controller.initialTodoItems,
-                onTodoItemsUpdated: (updatedTodoItems) {}
-            ),
+                onTodoItemsUpdated: (updatedTodoItems) {controller.update();}),
             const SizedBox(height: 20),
             Expanded(
-              child:
-              Obx(() => ListView.builder(
+              child: Obx(
+                () => ListView.builder(
                   itemBuilder: (context, index) {
-                      return NewTodoItem(
-                          newTodoItem: controller.initialTodoItems[index],
-                          onTap: (todoItem){
-                            controller.editTodoItem(controller.initialTodoItems[index]);
-
-                          },
-                          /*onPressed: (todoItem) {
-                            todoItem = controller.initialTodoItems[index];
-                            print(todoItem.categoryName);
-                            print("Logged!");
-                            controller.editTodoItem(todoItem);
-                          }*/
-                      );
-                    },
+                    return NewTodoItem(
+                      newTodoItem: controller.initialTodoItems[index],
+                    );
+                  },
                   itemCount: controller.initialTodoItems.length,
                 ),
               ),

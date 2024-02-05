@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/infrastructure/todo_item.dart';
@@ -11,8 +12,8 @@ class TodoHomepageController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     _initData();
+    super.onInit();
   }
 
   @override
@@ -22,88 +23,54 @@ class TodoHomepageController extends GetxController {
   }
 
   void _initData() {
-    print("initialisieren");
-    todoItemRepository.getAllTodoItems().then((todoItems) {
-      print("Abgerufene TodoItems: $todoItems");
-      if (todoItems.isNotEmpty) {
-        initialTodoItems.addAll(todoItems);
-      } else {
-        print("Keine Daten gefunden");
-      }
-    }).catchError((error) {
-      print("Fehler beim Abrufen der Daten: $error");
+    if (initialTodoItems.isEmpty) {
+      todoItemRepository.getAllTodoItems().then((todoItems) {
+        if (kDebugMode) {
+          print("Abgerufene TodoItems: $todoItems");
+        }
+        if (todoItems.isNotEmpty) {
+          initialTodoItems.addAll(todoItems);
+          update();
+        } else {
+          if (kDebugMode) {
+            print("Keine Daten gefunden");
+          }
+        }
+      }).catchError((error) {
+        if (kDebugMode) {
+          print("Fehler beim Abrufen der Daten: $error");
+        }
+      });
+    }
+  }
+
+  void addTodoItem(TodoItem newTodoItem){
+    todoItemRepository.addTodoItem(newTodoItem).then((_) {
+      initialTodoItems.add(newTodoItem);
+      update();
     });
   }
 
-  void editTodoItem(TodoItem todoItem) {
-    todoItemRepository.updateDataBasedOnQuery('name', 'test', 'testerchen');
-
-    String editedValue =
-        initialTodoItems[initialTodoItems.indexOf(todoItem)].name;
-
-    TextEditingController editingController =
-        TextEditingController(text: editedValue);
-
-    Get.defaultDialog(
-      title: 'Edit ToDo-Item',
-      content: TextField(
-        controller: editingController,
-        autofocus: true,
-        onChanged: (newValue) {
-          editedValue = newValue;
-        },
-      ),
-      confirm: ElevatedButton(
-        onPressed: () {
-          initialTodoItems[initialTodoItems.indexOf(todoItem)].name =
-              editedValue;
-          Get.back();
-        },
-        child: const Text('Save'),
-      ),
-      cancel: ElevatedButton(
-        onPressed: () {
-          Get.back();
-        },
-        child: const Text('Cancel'),
-      ),
-    ).then((returnVal) {
-      if (returnVal != null) {
-        initialTodoItems[initialTodoItems.indexOf(todoItem)].name = returnVal;
-      }
-    });
+  void editTodoItem(String name, bool done, String id) {
+    todoItemRepository.updateDataBasedOnQuery(name, done, id);
+    update();
   }
-
-/*Get.defaultDialog(
-          title: 'Dialog',
-          content: Text('This is a dialog'),
-          actions: [
-            TextButton(
-              child: const Text("Close"),
-              onPressed: () => Get.back(),
-            ),
-          ],
-
-      );
-
-  }
-
-
-
-
-  void editTodoItem(TodoItem todoItem) {
-    String editedValue =
-        initialTodoItems[initialTodoItems.indexOf(todoItem)].title;
-
-    print("Komme hier hin" + editedValue);
-
-    Get.dialog(
-
-    );
-  }*/
 
   void deleteTodoItem(TodoItem todoItem) {
     initialTodoItems.remove(todoItem);
-    todoItemRepository.deleteDataBasedOnQuery('name', 'testerchen');
+    todoItemRepository.deleteDataBasedOnQuery(todoItem);
+  }
+
+  void toggleDone(TodoItem todoItem) {
+    todoItem.done = !todoItem.done;
+    update();
+    if(todoItem.done){
+      Icons.check_box;
+      deleteTodoItem(todoItem);
+    }else {
+      todoItemRepository.updateDataBasedOnQuery(
+          todoItem.name, todoItem.done, todoItem.id);
+      update();
+    }
   }
 }

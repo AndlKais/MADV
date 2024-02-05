@@ -64,7 +64,7 @@ class Login extends GetView<TodoLoginController> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => TodoHomepage()
+                              builder: (context) => const TodoHomepage()
                         ));
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
