@@ -25,24 +25,25 @@ class NewTodoItem extends GetView<TodoHomepageController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              IconButton(
+                  onPressed: () {
+                    Get.find<TodoHomepageController>().toggleDone(newTodoItem);
+                    /*if (newTodoItem.done) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('ToDo-Item done!')),
+                      );
+                    }*/
+                    Get.find<TodoHomepageController>().onInit();
+                  },
+                  icon: newTodoItem.done
+                      ? const Icon(Icons.check_box)
+                      : const Icon(Icons.check_box_outline_blank)),
               Text(newTodoItem.name),
               /*Text(
                 'Finish Date: ${newTodoItem.finishDate}',
                 style: const TextStyle(color: Colors.black),
               ),*/
-              IconButton(
-                  onPressed: () {
-                    controller.toggleDone(newTodoItem);
-                    newTodoItem.done = true;
-                    if (newTodoItem.done) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('ToDo-Item done!')),
-                      );
-                    }
-                  },
-                  icon: newTodoItem.done
-                      ? const Icon(Icons.check_box)
-                      : const Icon(Icons.check_box_outline_blank)),
+              const Spacer(),
               IconButton(
                 onPressed: () {
                   _showDeleteConfirmationDialog(context, newTodoItem);

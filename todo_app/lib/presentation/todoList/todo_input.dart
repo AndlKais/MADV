@@ -118,6 +118,7 @@ class _TodoInputState extends State<TodoInput> {
           onPressed: () {
             final newTodoItem = TodoItem(
               name: myController.text,
+              done: false,
               id: DateTime.now().toString(),
             );
             todoController.addTodoItem(newTodoItem);

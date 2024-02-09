@@ -23,12 +23,12 @@ class TodoHomepageController extends GetxController {
   }
 
   void _initData() {
-    if (initialTodoItems.isEmpty) {
       todoItemRepository.getAllTodoItems().then((todoItems) {
         if (kDebugMode) {
           print("Abgerufene TodoItems: $todoItems");
         }
         if (todoItems.isNotEmpty) {
+          initialTodoItems.clear();
           initialTodoItems.addAll(todoItems);
           update();
         } else {
@@ -41,7 +41,7 @@ class TodoHomepageController extends GetxController {
           print("Fehler beim Abrufen der Daten: $error");
         }
       });
-    }
+
   }
 
   void addTodoItem(TodoItem newTodoItem){
@@ -62,14 +62,19 @@ class TodoHomepageController extends GetxController {
   }
 
   void toggleDone(TodoItem todoItem) {
-    todoItem.done = !todoItem.done;
-    update();
-    if(todoItem.done){
+    print("todoItem.done 1: " + todoItem.done.toString());
+    if(!todoItem.done){
+      print("todoItem.done 2: " + todoItem.done.toString());
       Icons.check_box;
-      deleteTodoItem(todoItem);
-    }else {
-      todoItemRepository.updateDataBasedOnQuery(
-          todoItem.name, todoItem.done, todoItem.id);
+      todoItem.done = true;
+      print("todoItem.done 3: " + todoItem.done.toString());
+      todoItemRepository.updateDataBasedOnQuery(todoItem.name, todoItem.done, todoItem.id);
+      update();
+    }else{
+      Icons.check_box_outline_blank;
+      todoItem.done = false;
+      print("todoItem.done 4: " + todoItem.done.toString());
+      todoItemRepository.updateDataBasedOnQuery(todoItem.name, todoItem.done, todoItem.id);
       update();
     }
   }
