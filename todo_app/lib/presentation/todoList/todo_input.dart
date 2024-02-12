@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/infrastructure/todoItem_repository.dart';
 import 'package:todo_app/infrastructure/todo_item.dart';
+import 'package:todo_app/presentation/todoHomepage/todo_homepage_controller.dart';
 
 class TodoInput extends StatefulWidget {
-  List<TodoItem> todoItems;
+
+  final List<TodoItem> todoItems;
   final Function(List<TodoItem>) onTodoItemsUpdated;
-  TodoInput({super.key, required this.todoItems, required this.onTodoItemsUpdated});
+  const TodoInput({super.key, required this.todoItems, required this.onTodoItemsUpdated});
 
   @override
   State<StatefulWidget> createState() => _TodoInputState();
@@ -12,6 +15,15 @@ class TodoInput extends StatefulWidget {
 
 class _TodoInputState extends State<TodoInput> {
   final myController = TextEditingController();
+  late final TodoItemRepository todoItemRepository;
+
+
+  @override
+  void initState() {
+
+    super.initState();
+    todoItemRepository = TodoItemRepository();
+  }
 
 
   @override
@@ -48,12 +60,13 @@ class _TodoInputState extends State<TodoInput> {
           ),
           onPressed: () {
             final newTodoItem = TodoItem(
-              title: myController.text,
-              categoryName: "Default",
-              finishDate: '',
+              name: myController.text,
+              done: true,
+              id: 0,
             );
             setState(() {
               widget.todoItems.add(newTodoItem);
+              todoItemRepository.addTodoItem(newTodoItem);
               myController.clear();
               widget.onTodoItemsUpdated(widget.todoItems);
             });
